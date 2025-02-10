@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods = ['GET','POST'])
 def hello():
-    return "Hello World from my Conda environment!"
+    # render sample html template
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
