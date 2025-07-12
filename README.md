@@ -1,2 +1,2 @@
 # GainGauge
-Simple calorie and workout tracking website.
+Simple calorie and workout tracking project using Flutter
