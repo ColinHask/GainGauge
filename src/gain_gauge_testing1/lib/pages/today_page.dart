@@ -50,28 +50,11 @@ class _TodayPageState extends State<TodayPage> {
               Center(
                 child: Text(
                   'Day ${widget.currentDay.dayNumber}',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),
 
-              const SizedBox(height: 10),
-
-              // Centered Next Day Button
-              Center(
-                child: NextDayButton(
-                  onConfirm: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Confirmed! Moving to next day...")),
-                    );
-                    widget.onDayChange();
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // goals section
-              Text("Daily Goals", style: Theme.of(context).textTheme.titleLarge),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -90,10 +73,32 @@ class _TodayPageState extends State<TodayPage> {
                   children: [ 
                     Text("OVER", style: Theme.of(context).textTheme.titleSmall,),
                     Text("${widget.currentDay.proteinGoal}g Protein", style: Theme.of(context).textTheme.titleSmall,)  ],
-                 ) ,),),
+                 ),
+                 ),
+                 ),
 
 
-              ],),
+                ],),
+
+              const SizedBox(height: 10),
+
+
+              // Centered Next Day Button
+              Center(
+                child: NextDayButton(
+                  onConfirm: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Confirmed! Moving to next day...")),
+                    );
+                    widget.onDayChange();
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // goals section              const SizedBox(height: 10),
+
+              
 
               const SizedBox(height: 20),
 
