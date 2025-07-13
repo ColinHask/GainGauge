@@ -4,6 +4,33 @@ import 'package:gain_gauge_testing1/pages/today_page.dart';
 import 'diet_history_page.dart';
 import 'workout_page.dart';
 import '../models/day_data.dart';
+
+
+
+/// TODO:
+/// - serialize data into json file
+/// - write data to file as str
+/// - parse json -> datdata list on startup
+/// 
+/// FUTURE TODO:
+/// - Today page
+///   - auto fill option on meal entry
+///   - Saving food items? (seperate json)
+///   - rename meal to food item
+///
+/// - Workout page
+///   - split creator
+///   - data entry
+///   - data storage
+/// 
+/// - ADD settings 
+///   - what to track
+///   - workout vs diet preference
+///   - diet goal setting (weekly vs biweekly vs custom # of days)
+///
+
+
+
 class MyTabbedApp extends StatefulWidget {
   const MyTabbedApp({super.key});
 
