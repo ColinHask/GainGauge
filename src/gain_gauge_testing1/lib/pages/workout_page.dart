@@ -8,7 +8,7 @@ class WorkoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    final Color color = Theme.of(context).colorScheme.secondary;
+    final Color color = Theme.of(context).colorScheme.secondaryContainer;
 
     return Center(
       child: Column(
@@ -29,9 +29,9 @@ class WorkoutPage extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              ' ===== Workout $i ===== ',
+                              ' Workout $i ',
                                style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSecondary,
+                                color: Theme.of(context).colorScheme.onSecondaryContainer,
                                 fontSize: 20,
                                )
                                 ),
@@ -39,7 +39,7 @@ class WorkoutPage extends StatelessWidget {
       
                               height: 400,
                               width: 300,
-                              child: Placeholder(color: Theme.of(context).colorScheme.onSecondary,)
+                              child: Placeholder(color: Theme.of(context).colorScheme.onSecondaryContainer,)
                               ),
                           ],
                         ),

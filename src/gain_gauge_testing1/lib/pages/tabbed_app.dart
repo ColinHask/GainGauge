@@ -28,9 +28,7 @@ class _MyTabbedAppState extends State<MyTabbedApp> {
       
     ];
 
-  currentDay = DayData(dayNumber: _dietHistory.length + 1, foodItems: [
-
-  ]);
+  currentDay = DayData(dayNumber: _dietHistory.length + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110);
 
 
   }
@@ -63,7 +61,7 @@ class _MyTabbedAppState extends State<MyTabbedApp> {
     setState(() {
       // TODO: modify this to be NOT demo data but real history
       _dietHistory.add(currentDay);
-      currentDay = DayData(dayNumber: currentDay.dayNumber + 1, foodItems: []);
+      currentDay = DayData(dayNumber: currentDay.dayNumber + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110);
     });
   }
   

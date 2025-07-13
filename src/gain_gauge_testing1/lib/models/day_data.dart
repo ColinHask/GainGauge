@@ -22,9 +22,11 @@ class FoodItem {
 class DayData {
   final int dayNumber;            // Example: Day 1, Day 2, etc.
   final List<FoodItem> foodItems; // A list of all foods eaten on this day.
+  final double calorieGoal;
+  final double proteinGoal;
 
   // Constructor to create a DayData object with day number and list of food items.
-  DayData({required this.dayNumber, required this.foodItems});
+  DayData({required this.dayNumber, required this.foodItems, required this.calorieGoal, required this.proteinGoal});
 
   // Getter to compute total calories from all food items.
   // The `=>` fat arrow means "return the result of this expression".
@@ -46,4 +48,8 @@ class DayData {
   // Total fat
   double get totalFat =>
       foodItems.fold(0, (sum, item) => sum + (item.fat ?? 0));
+
+  int get caloriePercent => ((totalCalories / calorieGoal) * 100).round();
+  int get proteinPercent => ((totalProtein / proteinGoal) * 100).round();
+
 }

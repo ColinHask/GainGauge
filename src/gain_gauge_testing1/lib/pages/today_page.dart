@@ -67,6 +67,33 @@ class _TodayPageState extends State<TodayPage> {
                   },
                 ),
               ),
+              const SizedBox(height: 20),
+
+              // goals section
+              Text("Daily Goals", style: Theme.of(context).textTheme.titleLarge),
+              const SizedBox(height: 10),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+
+                Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
+                 child: Column(
+                  
+                  children: [ 
+                    Text("UNDER", style: Theme.of(context).textTheme.titleSmall,),
+                    Text("${widget.currentDay.calorieGoal} Calories", style: Theme.of(context).textTheme.titleSmall,)  ],
+                 ) ,),),
+
+                 Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
+                 child: Column(
+                  children: [ 
+                    Text("OVER", style: Theme.of(context).textTheme.titleSmall,),
+                    Text("${widget.currentDay.proteinGoal}g Protein", style: Theme.of(context).textTheme.titleSmall,)  ],
+                 ) ,),),
+
+
+              ],),
 
               const SizedBox(height: 20),
 
@@ -98,8 +125,8 @@ class _TodayPageState extends State<TodayPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text("Calories: ${widget.currentDay.totalCalories}"),
-            Text("Protein: ${widget.currentDay.totalProtein}"),
+            Text("Calories: ${widget.currentDay.totalCalories} (${widget.currentDay.caloriePercent}%)"),
+            Text("Protein: ${widget.currentDay.totalProtein} (${widget.currentDay.proteinPercent}%)"),
           ],
         ),
       ),
@@ -122,7 +149,7 @@ class _MealList extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: Column(
         children: [
-          Text("Today's Meals", style: Theme.of(context).textTheme.titleLarge),
+          Text("Today's Meals", style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 10),
           for (var item in foodItems)
             Card(
