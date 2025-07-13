@@ -112,6 +112,9 @@ class _TodayPageState extends State<TodayPage> {
                     });
                   },
                 ),
+
+                const SizedBox(height: 80),
+
             ],
           ),
         ),
