@@ -7,7 +7,7 @@ import '../models/day_data.dart';
 // ==========================
 class DietHistoryPage extends StatefulWidget {
   // A label prefix shown above the list (customizable in future)
-  final label = "Selected Edit Day: ";
+  final label = "History";
 
   // List of DayData representing the user's tracked meal history
   final List<DayData> dietHistory;
@@ -25,12 +25,6 @@ class _DietHistoryPageState extends State<DietHistoryPage> {
   // This isn't currently used, but could be used to count active days
   int days = 0;
 
-  // Callback for when a user clicks the Edit button on a day card
-  void _editDay(int index) {
-    setState(() {
-      counter = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +63,6 @@ class _DietHistoryPageState extends State<DietHistoryPage> {
                   Expanded(
                     child: CalorieCard(data: day),
                   ),
-
-                  const SizedBox(width: 20), // Spacing between card and FAB
-
-                  // Show an "Edit" button only on the most recent day (last index)
-                  if (widget.dietHistory.indexOf(day) == widget.dietHistory.length - 1)
-                    FloatingActionButton(
-                      mini: true,
-                      onPressed: () => _editDay(widget.dietHistory.indexOf(day)),
-                      child: const Icon(Icons.edit),
-                    ),
-
                   const SizedBox(width: 20), // Right margin
                 ],
               ),
@@ -97,7 +80,7 @@ class _DietHistoryPageState extends State<DietHistoryPage> {
 
             // Label showing currently selected day index
             Text(
-              "${widget.label} $counter",
+              widget.label,
               style: const TextStyle(fontSize: 12),
             ),
 
