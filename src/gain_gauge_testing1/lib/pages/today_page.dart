@@ -56,42 +56,48 @@ class _TodayPageState extends State<TodayPage> {
 
               const SizedBox(height: 8),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-
-                Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
-                 child: Column(
-                  
-                  children: [ 
-                    Text("UNDER", style: Theme.of(context).textTheme.titleSmall,),
-                    Text("${widget.currentDay.calorieGoal} Calories", style: Theme.of(context).textTheme.titleSmall,)  ],
-                 ) ,),),
-
-                 Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
-                 child: Column(
-                  children: [ 
-                    Text("OVER", style: Theme.of(context).textTheme.titleSmall,),
-                    Text("${widget.currentDay.proteinGoal}g Protein", style: Theme.of(context).textTheme.titleSmall,)  ],
-                 ),
-                 ),
-                 ),
-
-
-                ],),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                
+                  Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
+                   child: Column(
+                    
+                    children: [ 
+                      Text("UNDER", style: Theme.of(context).textTheme.titleSmall,),
+                      Text("${widget.currentDay.calorieGoal} Calories", style: Theme.of(context).textTheme.titleSmall,)  ],
+                   ) ,),),
+                
+                   Card(child: Padding(padding: EdgeInsetsGeometry.all(8),
+                   child: Column(
+                    children: [ 
+                      Text("OVER", style: Theme.of(context).textTheme.titleSmall,),
+                      Text("${widget.currentDay.proteinGoal}g Protein", style: Theme.of(context).textTheme.titleSmall,)  ],
+                   ),
+                   ),
+                   ),
+                
+                
+                  ],),
+              ),
 
               const SizedBox(height: 10),
 
 
-              // Centered Next Day Button
+              // Centered Next DSay Button
               Center(
-                child: NextDayButton(
-                  onConfirm: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Confirmed! Moving to next day...")),
-                    );
-                    widget.onDayChange();
-                  },
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: NextDayButton(
+                    onConfirm: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Confirmed! Moving to next day...")),
+                      );
+                      widget.onDayChange();
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
