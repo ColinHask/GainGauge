@@ -16,6 +16,30 @@ class FoodItem {
     this.carbs,
     this.fat,
   });
+
+  // Convert to JSON map
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'calories': calories,
+        'protein': protein,
+        'carbs': carbs,
+        'fat': fat,
+        'weight': weight,
+      };
+
+  // Construct from JSON map
+  factory FoodItem.fromJson(Map<String, dynamic> json) => FoodItem(
+        name: json['name'],
+        calories: json['calories'],
+        protein: json['protein'],
+        carbs: json['carbs'],
+        fat: json['fat'],
+        weight: json['weight'],
+      );
+
+
+
+
 }
 
 // Represents a single day's worth of logged food and computes totals.
@@ -51,5 +75,23 @@ class DayData {
 
   int get caloriePercent => ((totalCalories / calorieGoal) * 100).round();
   int get proteinPercent => ((totalProtein / proteinGoal) * 100).round();
+
+    // Convert to JSON map
+  Map<String, dynamic> toJson() => {
+        'dayNumber': dayNumber,
+        'foodItems': foodItems.map((item) => item.toJson()).toList(),
+        'calorieGoal': calorieGoal,
+        'proteinGoal': proteinGoal,
+      };
+
+  // Construct from JSON map
+  factory DayData.fromJson(Map<String, dynamic> json) => DayData(
+        dayNumber: json['dayNumber'],
+        foodItems: (json['foodItems'] as List)
+            .map((item) => FoodItem.fromJson(item))
+            .toList(),
+            calorieGoal: json['calorieGoal'],
+            proteinGoal: json['proteinGoal'],
+      );
 
 }
