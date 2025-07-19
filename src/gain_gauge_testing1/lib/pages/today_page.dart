@@ -127,9 +127,12 @@ class _TodayPageState extends State<TodayPage> {
       ),
 
       // + Button to Add New Meal via Popup
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showMealInputPopup,
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 35),
+        child: FloatingActionButton(
+          onPressed: _showMealInputPopup,
+          child: const Icon(Icons.add),
+        ),
       ),
 
       // Sticky footer summary

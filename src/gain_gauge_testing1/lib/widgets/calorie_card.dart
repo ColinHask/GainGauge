@@ -29,14 +29,14 @@ class CalorieCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       for (var item in data.foodItems)
                         FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "${item.name}: ${item.calories}cal | ${item.protein}g protein ",
+                            "${item.name}: ${item.calories}cal | ${(item.protein != null)? item.protein: 0 }g protein ",
                           ),
                         ),
                     ],
@@ -47,9 +47,12 @@ class CalorieCard extends StatelessWidget {
                     children: [
                       Card(
                         elevation: 1,
-                        color: (data.totalCalories <= data.calorieGoal)
-                            ? Colors.greenAccent
-                            : Colors.redAccent,
+                        color: (data.totalCalories <= data.calorieGoal && data.totalCalories < (data.calorieGoal - 100))
+                            ? const Color.fromARGB(255, 190, 246, 218)
+                            : (data.totalCalories < data.calorieGoal)
+                            ? const Color.fromARGB(255, 236, 231, 179)
+                            : const Color.fromARGB(255, 246, 203, 203),
+
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: FittedBox(
@@ -64,8 +67,8 @@ class CalorieCard extends StatelessWidget {
       
                       Card(
                         color: (data.totalProtein >= data.proteinGoal)
-                            ? Colors.greenAccent
-                            : Colors.redAccent,
+                            ? const Color.fromARGB(255, 190, 246, 218)
+                            : const Color.fromARGB(255, 246, 203, 203),
                         elevation: 1,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
