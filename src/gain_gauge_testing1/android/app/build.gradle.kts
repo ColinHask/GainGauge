@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.gain_gauge_testing1"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // force Gradle to use the NDK version required by your plugins
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
