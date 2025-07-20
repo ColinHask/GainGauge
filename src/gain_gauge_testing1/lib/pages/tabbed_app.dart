@@ -1,11 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:gain_gauge_testing1/pages/my_custom_form.dart';
-import 'package:gain_gauge_testing1/pages/today_page.dart';
-import 'diet_history_page.dart';
-import 'workout_page.dart';
-import '../models/day_data.dart';
-
-
 
 /// TODO:
 /// - serialize data into json file
@@ -31,6 +23,20 @@ import '../models/day_data.dart';
 
 
 
+import 'package:flutter/material.dart';
+import 'package:gain_gauge_testing1/pages/my_custom_form.dart';
+import 'package:gain_gauge_testing1/pages/today_page.dart';
+import 'package:gain_gauge_testing1/storage/diet_storage.dart';
+import 'diet_history_page.dart';
+import 'workout_page.dart';
+import '../models/day_data.dart';
+
+/// Main entry widget that manages all tabs/pages of the app:
+/// - Diet History
+/// - Today Tracking
+/// - Workout
+/// - Testing Form
+
 class MyTabbedApp extends StatefulWidget {
   const MyTabbedApp({super.key});
 
@@ -39,98 +45,124 @@ class MyTabbedApp extends StatefulWidget {
 }
 
 class _MyTabbedAppState extends State<MyTabbedApp> {
-  
-  late final List<DayData> _dietHistory;
+  // List to store the full diet history
+  List<DayData> _dietHistory = [];
+
+  // Tracks which tab is selected
   int _selectedIndex = 1;
 
-  late DayData currentDay; // moved out of initState
+  // Object representing the current day being tracked
+  DayData currentDay = DayData(
+  dayNumber: 1,
+  foodItems: [],
+  calorieGoal: 2000,
+  proteinGoal: 110,
+  );
 
- @override
+  @override
   void initState() {
     super.initState();
-
-    _dietHistory = [
-
-      //TODO: load from file history here
-      
-    ];
-
-  currentDay = DayData(dayNumber: _dietHistory.length + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110);
-
-
+    _loadData(); // Load saved diet history on startup
   }
 
-    Widget _getPage(int index) {
-  switch (index) {
-    case 0:
-      return DietHistoryPage(dietHistory: _dietHistory);
-    case 1:
-      return TodayPage(
-        currentDay: currentDay,
-        onDayChange: () => _rotateDay(),
-      );
-    case 2:
-      return WorkoutPage(label: 'LIFT HEAVY!');
-    case 3:
-      return MyCustomForm();
-    default:
-      return Center(child: Text("Invalid Page"));
-  }
+  /// Loads saved diet history JSON and initializes current day
+bool _isLoading = true;
+
+void _loadData() async {
+  final history = await loadDietHistory();
+  setState(() {
+    _dietHistory = history;
+    currentDay = DayData(
+      dayNumber: _dietHistory.length + 1,
+      foodItems: [],
+      calorieGoal: 2000,
+      proteinGoal: 110,
+    );
+    _isLoading = false;
+  });
 }
 
+  /// Determines which page to display based on the selected tab
+  Widget _getPage(int index) {
+    
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    switch (index) {
+      case 0:
+        return DietHistoryPage(dietHistory: _dietHistory);
+      case 1:
+        return TodayPage(
+          currentDay: currentDay,
+          onDayChange: _rotateDay, // Rotate day callback
+        );
+      case 2:
+        return WorkoutPage(label: 'LIFT HEAVY!');
+      case 3:
+        return MyCustomForm();
+      default:
+        return const Center(child: Text("Invalid Page"));
+    }
+  }
+
+  /// Called when a different tab is selected
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  void _rotateDay(){
+  /// Moves currentDay to history and creates a new one, then saves
+  void _rotateDay() async {
     setState(() {
-      // TODO: modify this to be NOT demo data but real history
-      _dietHistory.add(currentDay);
-      currentDay = DayData(dayNumber: currentDay.dayNumber + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110);
+      _dietHistory.add(currentDay); // Add completed day to history
+      currentDay = DayData(
+        dayNumber: currentDay.dayNumber + 1,
+        foodItems: [],
+        calorieGoal: 2000,
+        proteinGoal: 110,
+      );
     });
+
+    // Persist the new diet history to disk
+    await saveDietHistory(_dietHistory);
   }
-  
-  
-  
+
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-        body: SafeArea(child: _getPage(_selectedIndex)),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          selectedItemColor: Theme.of(context).primaryColorDark,
-          unselectedItemColor: Theme.of(context).primaryColor,
-          selectedIconTheme: IconThemeData(size: 30, color: Theme.of(context).primaryColorDark),
-          onTap: _onItemTapped,
-          type: BottomNavigationBarType.shifting,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month),
-              label: 'Diet History',
-              ),
-
-              BottomNavigationBarItem(
-              icon: Icon(Icons.flatware),
-              label: 'Today',
-              ),
-
-              BottomNavigationBarItem(
-              icon: Icon(Icons.bolt),
-              label: 'Workout',
-              ),
-
-              BottomNavigationBarItem(
-              icon: Icon(Icons.science_rounded),
-              label: 'TESTING',
-              )
-          ]
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+      body: SafeArea(child: _getPage(_selectedIndex)),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColorDark,
+        unselectedItemColor: Theme.of(context).primaryColor,
+        selectedIconTheme: IconThemeData(
+          size: 30,
+          color: Theme.of(context).primaryColorDark,
         ),
-
-
-      );
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.shifting,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: 'Diet History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.flatware),
+            label: 'Today',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bolt),
+            label: 'Workout',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.science_rounded),
+            label: 'TESTING',
+          ),
+        ],
+      ),
+    );
   }
 }
