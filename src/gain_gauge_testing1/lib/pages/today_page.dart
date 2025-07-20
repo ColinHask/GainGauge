@@ -8,8 +8,9 @@ import 'package:gain_gauge_testing1/widgets/meal_input_popup.dart'; // Popup for
 class TodayPage extends StatefulWidget {
   final DayData currentDay; // Current day's data object, passed from parent
   final VoidCallback onDayChange; // Called when user moves to next day
+  final VoidCallback onDayUpdate; // Called when user updates today's items
 
-  const TodayPage({super.key, required this.currentDay, required this.onDayChange});
+  const TodayPage({super.key, required this.currentDay, required this.onDayChange, required this.onDayUpdate});
 
   @override
   State<TodayPage> createState() => _TodayPageState();
@@ -26,6 +27,7 @@ class _TodayPageState extends State<TodayPage> {
           onSubmit: (FoodItem item) {
             setState(() {
               widget.currentDay.foodItems.add(item);
+              widget.onDayUpdate();
             });
           },
         );
@@ -115,6 +117,7 @@ class _TodayPageState extends State<TodayPage> {
                   onRemove: (index) {
                     setState(() {
                       widget.currentDay.foodItems.removeAt(index);
+                      widget.onDayUpdate();
                     });
                   },
                 ),

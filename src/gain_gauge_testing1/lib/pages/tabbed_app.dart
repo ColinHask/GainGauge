@@ -51,13 +51,8 @@ class _MyTabbedAppState extends State<MyTabbedApp> {
   // Tracks which tab is selected
   int _selectedIndex = 1;
 
-  // Object representing the current day being tracked
-  DayData currentDay = DayData(
-  dayNumber: 1,
-  foodItems: [],
-  calorieGoal: 2000,
-  proteinGoal: 110,
-  );
+ DayData get currentDay => _dietHistory.last;
+
 
   @override
   void initState() {
@@ -71,14 +66,14 @@ bool _isLoading = true;
 void _loadData() async {
   final history = await loadDietHistory();
   setState(() {
-    _dietHistory = history;
-    currentDay = DayData(
-      dayNumber: _dietHistory.length + 1,
-      foodItems: [],
-      calorieGoal: 2000,
-      proteinGoal: 110,
-    );
+
+    // add starter day if history is empty
+    _dietHistory = history.isEmpty
+        ? [DayData(dayNumber: 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110)]
+        : history;
+    
     _isLoading = false;
+    
   });
 }
 
@@ -96,6 +91,7 @@ void _loadData() async {
         return TodayPage(
           currentDay: currentDay,
           onDayChange: _rotateDay, // Rotate day callback
+          onDayUpdate: () async => await saveDietHistory(_dietHistory),
         );
       case 2:
         return WorkoutPage(label: 'LIFT HEAVY!');
@@ -113,16 +109,10 @@ void _loadData() async {
     });
   }
 
-  /// Moves currentDay to history and creates a new one, then saves
+  /// adds new day
   void _rotateDay() async {
     setState(() {
-      _dietHistory.add(currentDay); // Add completed day to history
-      currentDay = DayData(
-        dayNumber: currentDay.dayNumber + 1,
-        foodItems: [],
-        calorieGoal: 2000,
-        proteinGoal: 110,
-      );
+      _dietHistory.add(DayData(dayNumber: currentDay.dayNumber + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110)); // Add completed day to history
     });
 
     // Persist the new diet history to disk
