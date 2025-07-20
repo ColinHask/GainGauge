@@ -24,7 +24,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:gain_gauge_testing1/pages/my_custom_form.dart';
+import 'package:gain_gauge_testing1/pages/debug_page.dart';
 import 'package:gain_gauge_testing1/pages/today_page.dart';
 import 'package:gain_gauge_testing1/storage/diet_storage.dart';
 import 'diet_history_page.dart';
@@ -96,7 +96,7 @@ void _loadData() async {
       case 2:
         return WorkoutPage(label: 'LIFT HEAVY!');
       case 3:
-        return MyCustomForm();
+        return DebugPage(onClearData: _clearUserData);
       default:
         return const Center(child: Text("Invalid Page"));
     }
@@ -113,6 +113,16 @@ void _loadData() async {
   void _rotateDay() async {
     setState(() {
       _dietHistory.add(DayData(dayNumber: currentDay.dayNumber + 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110)); // Add completed day to history
+    });
+
+    // Persist the new diet history to disk
+    await saveDietHistory(_dietHistory);
+  }
+
+    void _clearUserData() async {
+    setState(() {
+      _dietHistory = [DayData(dayNumber: 1, foodItems: [], calorieGoal: 2000, proteinGoal: 110)];
+      _selectedIndex = 1; // jump back to Today page
     });
 
     // Persist the new diet history to disk
@@ -149,7 +159,7 @@ void _loadData() async {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.science_rounded),
-            label: 'TESTING',
+            label: 'DEBUG',
           ),
         ],
       ),
